@@ -1,0 +1,69 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #f1f1f1;
+}
+
+.formu {
+  display:flex;
+  flex-direction: column;
+  width: 500px;
+  background-color: rgba(2, 182, 253, 0.473);
+  margin: 20px auto;
+  padding: 5px;
+}
+
+h2{
+  text-align: center;
+  color:black;
+}
+
+a {
+  color: #00fff2;
+}
+
+.entrada{
+  margin: 5px auto;
+}
+
+.envio{
+  width: 50%;
+  align-self: center;
+  margin-top: 7px;
+}
+
+#list-products{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#messages{
+  width: 600px;
+}
+
+.tituloChat{
+  color:blue;
+  margin-bottom: 20px;
+}
+
+.chat{
+  display: flex;
+  flex-direction: row;
+}
+
+.estiloEmail{
+  color:blue;
+}
+
+.estiloTexto{
+  color: rgb(11, 192, 11);
+}
+
+.estiloFecha{
+  color:brown;
+}
