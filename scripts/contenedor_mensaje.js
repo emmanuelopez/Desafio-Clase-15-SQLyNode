@@ -3,7 +3,7 @@ const knex = require("knex");
 class ContenedorM {
     constructor (dbOptions, table){
         this.conex = knex(dbOptions);
-          this.table = table;
+        this.table = table;
     }
 
     //crear tabla Mensajes    
@@ -11,7 +11,7 @@ class ContenedorM {
         try {
             await this.conex.schema.hasTable(this.table).then(async function (exists) {
                 if (!exists) {
-                    await conex.schema.createTable(table, function (campo) {
+                    await this.conex.schema.createTable(table, function (campo) {
                         campo.increments("id").primary().notNullable();
                         campo.string("email");
                         campo.string("fecha");
