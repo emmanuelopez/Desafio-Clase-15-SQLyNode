@@ -5,6 +5,7 @@ const { Server: IOServer } = require("socket.io");
 
 //Obtengo los productos
 const productosRouter = require('./routes/productos');
+const { isConstructorDeclaration } = require('typescript')
 
 const app = express();
 const httpServer = new HttpServer(app);
@@ -13,9 +14,12 @@ const io = new IOServer(httpServer);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/api', productosRouter);
 
-const {Api} = require('../scripts/api'); //importo la clase api
-const api = new Api(
+const ContenedorP = require('./scripts/contenedor_producto')
+const ContenedorM = require('./scripts/contenedor_mensaje')
+
+const Producto = new ContenedorP(
   {
     client: "mysql",
     connection: {
@@ -31,6 +35,58 @@ const api = new Api(
 );
 
 
+//creo la tabla productos
+(async () => {
+  try {
+    await Producto.crearTablaProductos();
+  } catch (err) {
+    console.error(err);
+  }
+})();
+
+//obtengo listado de productos
+//let listadoProductos = Producto.getProductos();
+let listadoProductos
+(async () => {
+  try {
+    listadoProductos = await Producto.getAll();
+  } catch (err) {
+    console.error(err);
+  }
+})();
+
+const Mensaje = new ContenedorM(
+  {
+    client: "sqlite3",
+    connection: { filename: "./mydb.sqlite" },
+  },
+  "mensajes"
+);
+
+//creo la tabla mensajes
+(async () => {
+  try {
+    await Mensaje.crearTablaMensajes();
+  } catch (err) {
+    console.error(err);
+  }
+})();
+
+const date = new Date();
+let listaMensajes = [{ 
+  email:"Admin",
+  fecha: date.toLocaleDateString() + " " + date.toLocaleTimeString(),
+  mensaje: "Bienvenido al chat!!"
+}];
+(async () => {
+  try {
+    listaMensajes = await Mensaje.getMensajes();
+  } catch (err) {
+    console.error(err);
+  }
+})();
+
+
 app.use(function (req, res, next) {
     req.user = {
       name: "Ema",
@@ -39,9 +95,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use('/api', productosRouter);
 
-const date = new Date();
 const MENSAJES = [
   {
       email: "Admin",
